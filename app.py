@@ -1,12 +1,10 @@
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
 import plotly.express as px
 
 df =  pd.read_pickle("Assets/Patient_data.pkl")
 
 st.title("Hospital Readmission Analysis")
-
 
 fig = px.histogram(
     df,
@@ -33,7 +31,6 @@ fig.update_yaxes(
     title_text="Number of Patients",
     fixedrange=True
 )
-
 
 st.plotly_chart(fig, use_container_width=True)
 
@@ -161,6 +158,7 @@ fig.update_yaxes(
 )
 
 st.plotly_chart(fig, use_container_width=True)
+
 fig = px.scatter(
     df,
     x="time_in_hospital",
@@ -170,6 +168,7 @@ fig = px.scatter(
 )
 
 st.plotly_chart(fig, use_container_width=True)
+
 num_cols = ['num_medications', 'num_lab_procedures', 'time_in_hospital']
 
 corr_matrix = df[num_cols].corr()
@@ -186,6 +185,7 @@ fig.update_layout(
     title_x=0.5
 )
 st.plotly_chart(fig, use_container_width=True)
+
 df_subset = df[df['readmitted'].isin(['NO', '<30'])]
 
 fig = px.box(
@@ -198,8 +198,8 @@ fig = px.box(
 )
 
 fig.update_layout(width=700, height=450, title_x=0.5)
-st.plotly_chart(fig, use_container_width=True)
 
+st.plotly_chart(fig, use_container_width=True)
 
 df_subset2 = df[df['discharge_disposition_desc'].isin([
     'Discharged to home', 
@@ -207,12 +207,16 @@ df_subset2 = df[df['discharge_disposition_desc'].isin([
 ])]
 
 readmit_counts = df_subset2.groupby(['discharge_disposition_desc', 'readmitted']).size().unstack(fill_value=0)
+
 readmit_rates = readmit_counts.div(readmit_counts.sum(axis=1), axis=0) * 100
+
 df_subset2['discharge_disposition_desc'] = df_subset2['discharge_disposition_desc'].replace(
     'Discharged/transferred to a Skilled Nursing Facility (SNF)',
     'Transferred to Nursing Room'
 )
+
 readmit_rates_30 = df_subset2.groupby('discharge_disposition_desc')['readmit_30'].mean().reset_index()
+
 fig = px.bar(
     readmit_rates_30,
     x='discharge_disposition_desc',
