@@ -11,13 +11,6 @@ venv/
 .profile_default/
 .ipython/
 
-data/raw/
-data/processed/
-data/*.csv
-data/*.pkl
-data/*.pickle
-
-
 *.joblib
 *.h5
 *.model
