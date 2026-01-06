@@ -6,6 +6,33 @@ df =  pd.read_pickle("Assets/Patient_data.pkl")
 
 st.title("Hospital Readmission Analysis")
 
+st.markdown("""
+
+This dashboard presents a data-driven analysis of hospital readmissions with a
+focus on identifying patients who are at higher risk of being readmitted within
+30 days after discharge. Hospital readmissions are an important indicator of
+healthcare quality and also contribute to increased operational costs and patient
+burden.
+
+The analysis is based on cleaned and validated patient-level data. Records with
+invalid demographic values and deceased patients were removed to ensure
+methodological accuracy and to focus only on preventable readmission patterns.
+Several patient attributes such as age, medication usage, length of hospital stay,
+laboratory procedures, discharge disposition, and clinical risk scores were
+examined.
+
+Visualizations in this dashboard explore how readmission rates vary across
+different demographic groups, treatment patterns, and clinical conditions.
+Special attention is given to medication changes, discharge outcomes, and the
+VCI risk classification to highlight patient groups that require closer clinical
+monitoring.
+
+Overall, this analysis supports evidence-based decision-making by translating
+complex hospital data into clear insights that can assist healthcare professionals
+in improving post-discharge care and reducing avoidable readmissions.
+""")
+
+
 fig = px.histogram(
     df,
     x="age",
@@ -18,8 +45,7 @@ fig.update_layout(
     height=500,
     bargap=0.2,
     template="plotly_white",
-    title_x=0.5,
-    xaxis_tickangle=-45
+    title_x=0.3,
 )
 
 fig.update_xaxes(
@@ -182,7 +208,7 @@ fig = px.imshow(
 fig.update_layout(
     width=600,
     height=500,
-    title_x=0.5
+    title_x=0.25
 )
 st.plotly_chart(fig, use_container_width=True)
 
@@ -248,11 +274,13 @@ fig = px.bar(
     y='Readmission_Percentage',
     text='Readmission_Percentage',
     labels={'Readmission_Percentage': 'Readmission Rate (%)'},
-    title='30-Day Readmission Rate by VCI Risk Group'
+    title='30-Day Readmission Rate by VCI Risk Group',
+    color_discrete_sequence=[["#05b387","#05b387","#05b387"]]
 )
 
 fig.update_traces(texttemplate='%{text:.1f}%', textposition='outside')
 fig.update_layout(
+    title_x=0.25,
     yaxis=dict(range=[0, 20]),
     template='plotly_white'
 )
